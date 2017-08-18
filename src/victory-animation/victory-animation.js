@@ -147,9 +147,10 @@ export default class VictoryAnimation extends React.Component {
             animating: false
           }
         });
-      }
-      if (this.loopID) {
-        this.timer.unsubscribe(this.loopID);
+
+        if (this.loopID) {
+          this.timer.unsubscribe(this.loopID);
+        }
       }
       this.queue.shift();
       this.traverseQueue();
