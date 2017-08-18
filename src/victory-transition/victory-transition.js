@@ -24,8 +24,8 @@ export default class VictoryTransition extends React.Component {
     };
     const child = this.props.children;
     this.continuous = child.type && child.type.continuous === true;
+    this.timer = new Timer();
     this.getTransitionState = this.getTransitionState.bind(this);
-    this.getTimer = this.getTimer.bind(this);
   }
 
   componentDidMount() {
@@ -33,24 +33,16 @@ export default class VictoryTransition extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getTimer().bypassAnimation();
+    this.timer.bypassAnimation();
     this.setState(
-      this.getTransitionState(this.props, nextProps), () => this.getTimer().resumeAnimation()
+      this.getTransitionState(this.props, nextProps), () => this.timer.resumeAnimation()
     );
   }
 
   componentWillUnmount() {
-    this.getTimer().stop();
-  }
+    this.timer.stop();
 
-  getTimer() {
-    if (this.context.getTimer) {
-      return this.context.getTimer();
-    }
-    if (!this.timer) {
-      this.timer = new Timer();
-    }
-    return this.timer;
+    this.timer = null;
   }
 
   getTransitionState(props, nextProps) {
