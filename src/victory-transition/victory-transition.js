@@ -131,7 +131,11 @@ export default class VictoryTransition extends React.Component {
       Transitions.getTransitionPropsFactory(
         props,
         this.state,
-        (newState) => this.setState(newState)
+        (newState) => {
+          if (this.timer) {
+            this.setState(newState);
+          }
+        }
       );
     const child = React.Children.toArray(props.children)[0];
     const transitionProps = getTransitionProps(child);
